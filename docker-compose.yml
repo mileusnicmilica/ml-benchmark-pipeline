@@ -1,0 +1,7 @@
+# docker-compose.yml
+services:
+  benchmark:
+    build: .
+    container_name: ml-benchmark
+    volumes:
+      - ./results:/app/results
