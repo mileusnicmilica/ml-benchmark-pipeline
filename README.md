@@ -4,52 +4,51 @@ A CI/CD pipeline that automatically trains, evaluates, and compares PyTorch mode
 
 ## Overview
 
-This project benchmarks three neural network architectures:
-- **LinearNet** — simple fully-connected baseline
-- **CNNNet** — convolutional network for spatial pattern recognition  
-- **DeepNet** — deeper fully-connected network with BatchNorm
+This project benchmarks three neural network architectures across four key metrics: **accuracy**, **training time**, **inference speed**, and **parameter count**. Results are automatically generated as a JSON file, Markdown report, and interactive HTML dashboard.
 
-Each model is evaluated on accuracy, training time, and parameter count. Results are automatically saved as JSON and Markdown reports.
-
-## Results
-
-| Model | Accuracy | Training Time | Parameters |
-|-------|----------|---------------|------------|
-| LinearNet | 97.48% | 102.0s | 109,386 |
-| CNNNet | 99.17% | 212.2s | 421,642 |
-| DeepNet | 98.07% | 129.7s | 576,586 |
-
-**Winner: CNNNet with 99.17% accuracy**
-
-## Project Structure
-```
-ml-benchmark-pipeline/
-├── .github/workflows/    # CI/CD pipeline
-├── models/               # PyTorch model architectures
-│   ├── linear_net.py
-│   ├── cnn_net.py
-│   └── deep_net.py
-├── benchmark/            # Training, evaluation, reporting
-│   ├── runner.py
-│   └── reporter.py
-├── data/                 # MNIST data loader
-├── results/              # Auto-generated reports
-├── Dockerfile
-├── docker-compose.yml
-└── main.py
-```
+- **LinearNet** — simple fully-connected baseline, fastest inference
+- **CNNNet** — convolutional network, best accuracy through spatial pattern recognition
+- **DeepNet** — deeper fully-connected network with BatchNorm regularization
 
 ## How to Run
 
 ### Locally
 ```bash
 pip install -r requirements.txt
-python main.py
+python main.py                  # default: 5 epochs
+python main.py --epochs 10      # custom epoch count
 ```
 
 ### With Docker
 ```bash
 docker compose up --build
+```
+
+## Output
+
+Each run automatically generates three output files in `results/`:
+- `benchmark_<timestamp>.json` — raw results
+- `latest_report.md` — Markdown summary table
+- `dashboard.html` — interactive HTML dashboard with charts
+
+## Project Structure
+```
+ml-benchmark-pipeline/
+├── .github/workflows/      # CI/CD — runs on every push
+│   └── benchmark.yml
+├── models/                 # PyTorch model architectures
+│   ├── linear_net.py
+│   ├── cnn_net.py
+│   └── deep_net.py
+├── benchmark/              # Core pipeline logic
+│   ├── runner.py           # Training, evaluation, inference timing
+│   ├── reporter.py         # JSON + Markdown report generation
+│   └── html_reporter.py    # Interactive HTML dashboard
+├── data/                   # MNIST data loader
+├── results/                # Auto-generated reports (gitignored)
+├── Dockerfile
+├── docker-compose.yml
+└── main.py                 # Pipeline entrypoint
 ```
 
 ## Tech Stack
@@ -58,3 +57,4 @@ docker compose up --build
 - **Docker** — containerization for reproducibility
 - **GitHub Actions** — automated CI/CD pipeline
 - **Python** — scripting, automation, reporting
+- **Chart.js** — interactive benchmark visualizations
