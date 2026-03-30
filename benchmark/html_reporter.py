@@ -76,9 +76,9 @@ def generate_html_report(results: dict, output_dir: str = "results"):
         <tr>
             <td class="{'best' if m == best else ''}">{m}</td>
             <td class="{'best' if m == best else ''}">{round(results[m]['accuracy'], 2)}%</td>
-            <td>{results[m]['training_time']:.1f}s</td>
-            <td>{results[m]['inference_ms']:.3f}ms</td>
-            <td>{results[m]['params']:,}</td>
+            <td>{round(results[m]['training_time'], 1)}s</td>
+            <td>{round(results[m]['inference_ms'], 3)}ms</td>
+            <td>{'{:,}'.format(results[m]['params'])}</td>
         </tr>""" for m in names)}
     </table>
 
