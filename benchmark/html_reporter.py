@@ -75,7 +75,7 @@ def generate_html_report(results: dict, output_dir: str = "results"):
         {''.join(f"""
         <tr>
             <td class="{'best' if m == best else ''}">{m}</td>
-            <td class="{'best' if m == best else ''}">{results[m]['accuracy']:.2f}%</td>
+            <td class="{'best' if m == best else ''}">{round(results[m]['accuracy'], 2)}%</td>
             <td>{results[m]['training_time']:.1f}s</td>
             <td>{results[m]['inference_ms']:.3f}ms</td>
             <td>{results[m]['params']:,}</td>
