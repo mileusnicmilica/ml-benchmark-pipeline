@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ML Benchmark Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #0f1117; color: #ffffff; margin: 0; padding: 20px; }
+        h1 { text-align: center; color: #4C72B0; }
+        .subtitle { text-align: center; color: #888; margin-bottom: 30px; }
+        .winner { text-align: center; background: #1e2130; padding: 15px; border-radius: 10px; margin-bottom: 30px; font-size: 1.2em; }
+        .winner span { color: #ffd700; font-weight: bold; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 30px; }
+        .card { background: #1e2130; border-radius: 10px; padding: 20px; }
+        .card h3 { color: #4C72B0; margin-top: 0; }
+        table { width: 100%; border-collapse: collapse; background: #1e2130; border-radius: 10px; overflow: hidden; }
+        th { background: #4C72B0; padding: 12px; text-align: left; }
+        td { padding: 12px; border-bottom: 1px solid #2e3250; }
+        tr:last-child td { border-bottom: none; }
+        .best { color: #ffd700; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>ML Model Benchmark Dashboard</h1>
+    <p class="subtitle">Generated on 2026-03-30 22:57:18</p>
+
+    <div class="winner">Winner: <span>CNNNet</span> with <span>98.95%</span> accuracy</div>
+
+    <div class="grid">
+        <div class="card">
+            <h3>Accuracy (%)</h3>
+            <canvas id="accuracyChart"></canvas>
+        </div>
+        <div class="card">
+            <h3>Training Time (seconds)</h3>
+            <canvas id="timeChart"></canvas>
+        </div>
+        <div class="card">
+            <h3>Inference Time (ms per image)</h3>
+            <canvas id="inferenceChart"></canvas>
+        </div>
+        <div class="card">
+            <h3>Training Loss per Epoch</h3>
+            <canvas id="lossChart"></canvas>
+        </div>
+    </div>
+
+    <table>
+        <tr>
+            <th>Model</th>
+            <th>Accuracy</th>
+            <th>Training Time</th>
+            <th>Inference Time</th>
+            <th>Parameters</th>
+        </tr>
+        
+        <tr>
+            <td class="">LinearNet</td>
+            <td class="">96.94%</td>
+            <td>36.9s</td>
+            <td>0.096ms</td>
+            <td>109,386</td>
+        </tr>
+        <tr>
+            <td class="best">CNNNet</td>
+            <td class="best">98.95%</td>
+            <td>112.9s</td>
+            <td>0.613ms</td>
+            <td>421,642</td>
+        </tr>
+        <tr>
+            <td class="">DeepNet</td>
+            <td class="">97.75%</td>
+            <td>75.9s</td>
+            <td>0.407ms</td>
+            <td>576,586</td>
+        </tr>
+    </table>
+
+    <script>
+        const colors = ['#4C72B0', '#DD8452', '#55A868'];
+        const names = ['LinearNet', 'CNNNet', 'DeepNet'];
+
+        new Chart(document.getElementById('accuracyChart'), {
+            type: 'bar',
+            data: {
+                labels: names,
+                datasets: [{ data: [96.94, 98.95, 97.75], backgroundColor: colors }]
+            },
+            options: { plugins: { legend: { display: false } }, scales: { y: { min: 90 } } }
+        });
+
+        new Chart(document.getElementById('timeChart'), {
+            type: 'bar',
+            data: {
+                labels: names,
+                datasets: [{ data: [36.92721176147461, 112.92814707756042, 75.9073715209961], backgroundColor: colors }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('inferenceChart'), {
+            type: 'bar',
+            data: {
+                labels: names,
+                datasets: [{ data: [0.09607896208763123, 0.6128493696451187, 0.40726177394390106], backgroundColor: colors }]
+            },
+            options: { plugins: { legend: { display: false } } }
+        });
+
+        new Chart(document.getElementById('lossChart'), {
+            type: 'line',
+            data: {
+                labels: [1, 2, 3],
+                datasets: [{label: 'LinearNet', data: [0.3075788156119491, 0.14634143604811575, 0.1101010692864855], borderColor: '#4C72B0', tension: 0.3, fill: false}, {label: 'CNNNet', data: [0.22517367250927445, 0.08701086897444703, 0.06399760523512871], borderColor: '#DD8452', tension: 0.3, fill: false}, {label: 'DeepNet', data: [0.28219542472259895, 0.1392620203099144, 0.11050886318369556], borderColor: '#55A868', tension: 0.3, fill: false}]
+            },
+            options: { plugins: { legend: { labels: { color: '#fff' } } } }
+        });
+    </script>
+</body>
+</html>

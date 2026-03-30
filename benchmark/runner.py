@@ -63,3 +63,29 @@ def get_model_size(model: nn.Module):
     Returns total number of trainable parameters.
     """
     return sum(p.numel() for p in model.parameters())
+
+def measure_inference(model: nn.Module, test_loader: DataLoader, num_samples: int = 100):
+    """
+    Measures average inference time per single image in milliseconds.
+    This simulates real-world production usage.
+    """
+    model.eval()
+    times = []
+
+    with torch.no_grad():
+        for images, _ in test_loader:
+            for i in range(min(num_samples, len(images))):
+                single_image = images[i].unsqueeze(0)  # dodaj batch dimenziju
+
+                start = time.time()
+                _ = model(single_image)
+                end = time.time()
+
+                times.append((end - start) * 1000)  # konvertuj u milisekunde
+
+            if len(times) >= num_samples:
+                break
+
+    avg_inference_ms = sum(times) / len(times)
+    print(f"Avg inference time: {avg_inference_ms:.3f}ms per image")
+    return avg_inference_ms

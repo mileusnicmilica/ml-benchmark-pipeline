@@ -1,0 +1,29 @@
+{
+  "LinearNet": {
+    "accuracy": 95.51,
+    "training_time": 13.049573421478271,
+    "params": 109386,
+    "loss_history": [
+      0.3116236440539519
+    ],
+    "inference_ms": 0.09062327444553375
+  },
+  "CNNNet": {
+    "accuracy": 98.32,
+    "training_time": 38.657654762268066,
+    "params": 421642,
+    "loss_history": [
+      0.21891844353136192
+    ],
+    "inference_ms": 0.3860797733068466
+  },
+  "DeepNet": {
+    "accuracy": 96.51,
+    "training_time": 15.98272967338562,
+    "params": 576586,
+    "loss_history": [
+      0.27844073284250587
+    ],
+    "inference_ms": 0.24319253861904144
+  }
+}

@@ -1,5 +1,6 @@
 # main.py
 import json
+import argparse
 from datetime import datetime
 
 from models import LinearNet, CNNNet, DeepNet
@@ -8,21 +9,22 @@ from benchmark import (
     train_model,
     evaluate_model,
     get_model_size,
+    measure_inference,
     save_results,
-    generate_markdown_report
+    generate_markdown_report,
+    generate_html_report
 )
 
 
-def run_benchmark():
+def run_benchmark(epochs: int = 5):
     print("=" * 50)
     print("   ML Model Benchmark Pipeline")
+    print(f"   Epochs: {epochs}")
     print("=" * 50)
 
-    # Učitaj podatke
     print("\n Loading MNIST dataset...")
     train_loader, test_loader = get_dataloaders(batch_size=64)
 
-    # Modeli koje benchmarkujemo
     models = {
         "LinearNet": LinearNet(),
         "CNNNet": CNNNet(),
@@ -31,28 +33,28 @@ def run_benchmark():
 
     results = {}
 
-    # Treniraj i evaluiraj svaki model
     for name, model in models.items():
         print(f"\n{'=' * 50}")
         print(f"  Training {name}")
         print(f"{'=' * 50}")
 
-        loss_history, training_time = train_model(model, train_loader, epochs=5)
+        loss_history, training_time = train_model(model, train_loader, epochs=epochs)
         accuracy = evaluate_model(model, test_loader)
+        accuracy = evaluate_model(model, test_loader)
+        inference_ms = measure_inference(model, test_loader)
 
         results[name] = {
             "accuracy": accuracy,
             "training_time": training_time,
             "params": get_model_size(model),
-            "loss_history": loss_history
+            "loss_history": loss_history,
+            "inference_ms": inference_ms 
         }
 
-    # Sačuvaj rezultate
     print("\n Saving results...")
     save_results(results, output_dir="results")
     generate_markdown_report(results, output_dir="results")
-
-    # Prikaži summary
+    generate_html_report(results, output_dir="results")
     print("\n" + "=" * 50)
     print("   Final Benchmark Summary")
     print("=" * 50)
@@ -71,4 +73,12 @@ def run_benchmark():
 
 
 if __name__ == "__main__":
-    run_benchmark()
+    parser = argparse.ArgumentParser(description="ML Model Benchmark Pipeline")
+    parser.add_argument(
+        "--epochs",
+        type=int,
+        default=5,
+        help="Number of training epochs (default: 5)"
+    )
+    args = parser.parse_args()
+    run_benchmark(epochs=args.epochs)

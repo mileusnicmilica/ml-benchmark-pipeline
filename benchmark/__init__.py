@@ -1,5 +1,6 @@
 # benchmark/__init__.py
-from .runner import train_model, evaluate_model, get_model_size
+from .runner import train_model, evaluate_model, get_model_size, measure_inference
 from .reporter import save_results, generate_markdown_report
+from .html_reporter import generate_html_report
 
 __all__ = ["train_model", "evaluate_model", "get_model_size", "save_results", "generate_markdown_report"]
